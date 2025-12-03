@@ -1,45 +1,32 @@
-3D Surrogate model:
-The surrogate model used in this work is designed to replicate the through-section mechanical behaviour captured by finite element analysis along a stress classification line. To achieve this replication of behaviour the local area around the SCL can be represented via a series of nodes connected by sets of ‘units’ that follow beam theory. Each unit captures the behaviour over a certain section of the line profile of surrounding material. By altering the stiffnesses of each unit in the surrogate model, it can be made to replicate the behaviour of an FEA model in areas containing stress concentrations that are induced by the geometry, such as a weld toe or notch. The surrogate has significant computational advantages over full FEA due to the fewer calculation points, needed to give an acceptable approximation of the structural response. 
-The mathematical description of the ROM is given below:
-The ROM functions as a series of custom 3D beam elements connected to nodes which enforce each element to share its degrees of freedom with every other element connected to that node. This means that the behaviour of each node can be changed by altering the stiffnesses of different elements along the section. Each element consists of three separate beams that are connected via the material model; an axial beam with 4 degrees of freedom (u_xx,u_xy,u_xz,θ_xz), a transverse beam (u_yy,θ_yz), and an out-of-plane beam (u_zz,θ_zx). This total of 8 degrees of freedom allows for both normal and shear stresses to be captured in the model. Figure X shows a diagram of the three beams that make up an element with their respective degrees of freedom.
+Surrogate Model Formulation
+Single Element Formulation
+Consider a single beam element with 2 nodes. This element has 8 degrees of freedom at each node which allow for a 6 dimensional stress tensor to be calculated for any given applied load or displacement. The 8 degrees of freedom are linked by considering each element as three 3D beams as shown in Figure 2 1.
+Figure 2 1: Figure showing one element and the beams it is made of. The dofs for one end of the beam are given.
 
-The forces applied to an element,  f,can be related to the resulting deflections and rotations, u, via the element stiffness matrix, k, as follows:
-f=ku
-Every unit follows beam theory so to construct k, a set of three governing equations can be employed:
+The three beams correspond to an axial beam with 4 degrees of freedom (u_xx,u_xy,u_xz,θ_xz), a transverse beam (u_yy,θ_yz), and an out-of-plane beam (u_zz,θ_zx). The forces applied to an element, f_e,can be related to the resulting deflections and rotations, u_e, via the element stiffness matrix, k_e, as follows:
 
-	The displacement, u, can be related to the deformation (represented by strain), ϵ, experienced by the material via Eq. X
-ϵ_ij=〖du〗_j/(dL_i )
-	Where L is the length of the beam. There is 6 strain components that are related to the 8 degrees of freedom so a 6x8 matrix termed the B matrix is created:
-ϵ=Bu
+f_e=k_e u_e	Equation 1
 
-	The strain can be related to the internal forces (represented at stress) via Eq. Y
-σ_ij=C_ijkl ϵ_ij
+
+The element stiffness matrix is constructed using a set of three governing equations:
+	The degrees of freedom related to the element, u_e, can be related to the deformation (represented as strain), ϵ via Equation 2:
+ϵ=Bu_e	Equation 2
+
+Where B is a matrix that defines the relationship between u_e and ϵ. The Full B matrix used for every element is as follows:
+[■(ϵ_xx@ϵ_yy@ϵ_zz  @ϵ_xy@ϵ_xz@ϵ_yz )]=1/L {■(1&0&0&dn&0&0&0&0&-1&0&0&-dn&0&0&0&0@0&0&0&0&1&0&dn&0&0&0&0&0&-1&0&-dn&0 @0&0&0&0&0&1&0&dn&0&0&0&0&0&-1&0&-dn@0&1&0&d_tn^n L_x&0&0&0&0&0&-1&0&-d_tn^n L_x&0&0&0&0@0&0&1&0&0&0&0&0&0&0&-1&0&0&0&0&0@0&0&0&0&0&0&0&0&0&0&0&0&0&0&0&0)}[■(u_(xx,i)@u_(xy,i)@u_(xz,i)@θ_(xz,i)@u_(yy,i)@u_(zz,i)@θ_(yy,i)@θ_(zz,i)@u_(xx,j)@u_(xy,j)@u_(xz,j)@θ_(xz,j)@u_(yy,j)@u_(zz,j)@θ_(yy,j)@θ_(zz,j) )]	Equation 3
+
+Where i and j represent the top and bottom node of the element. L_x,L_y  and L_z represent the length of each beam in the element. d_th^n is the distance from the element connection point on the node to the neutral axis. Figure 2 2 gives a visual depiction of the meaning of this parameter. 
+The construction of the B matrix is outlined in Appendix A
+
+Figure 2 2: Figure describing what d_x^n is.
+	The strain is related to the internal forces (represented as stress) via Equation 4
+σ=Cϵ	Equation 4
+
 Where σ_ij is the stress and C_ijkl is the 6x6 material model. 
 
+	The stress is related to the applied forces via Equation 5:
+f_e=A^T σ	Equation 5
 
-	The stress can be related to the applied forces via Eq. Z:
-f_ij=A_i.σ_ij
-Where A_i is the area of the beam. There is 8 applied forces (same as degrees of freedom) related to 6 stress components so the A matrix relates these components via a 8x6 matrix.
-f=A^T σ
+	Where A^T is a matrix that defines the relationship between f_e and σ. In this case A^T=B^T.
 
-Eq. X, Y,Z and A can be combined to give:
-f=A^T.C.Bu
-For a full description of how the A and B matrices are constructed please see Appendix A
-Once the element stiffness matrix is found for every element the global stiffness matrix, K, which contains every degree of freedom in the model, can be constructed by simply adding the element stiffness matrices to the corresponding places in K.
-Given a fully constrained system and set of known applied forces, F, the associated displacements can be found by solving the global stiffness equation:
-u=K.F^(-1)
-An example of a fully constrained system is a model with two nodes in which every degree of freedom at one node is fixed at 0. 
-This surrogate model is designed to accept both Neumann (applied forces/moments) and Dirichlet (applied deflections/rotations) boundary conditions. To achieve this the global stiffness matrix and force vector must be adjusted. The force vector is first adjusted by setting any position in which the degree of freedom is directly defined to zero. Additionally, the columns and rows of the same degree of freedom are set to zero, except diagonals which are set as one. 
-
-General Solver Functionality
-Once the global stiffness matrix is correctly adjusted an initial guess of the displacements, u, is chosen (usually 0 in all locations). u is then fed into the material model, the strains are calculated via: 
-ϵ=Bu
-The resulting strains are used to find the stresses using Eq. X and finally the stresses are converted to nodal forces via Eq. Y.
-The nodal force contribution from each element is added together in the global force vector. This is then compared to the adjusted applied forces vector, ignoring any rows which contain Dirichlet boundary conditions.
-If the residual is greater than a set tolerance, then the initial guess for u has not reached equilibrium and a new guess for u is found using Eq. A. 
-The above process is repeated iteratively using a Newton-Raphson convergence algorithm until a u that satisfies equilibrium is found.
-
-
-
-A simple, linear elastic example of a FEA model and its associated ROM is given in figure X. Here the SCL is extracted from a notched bar. To replicate the behaviour seen in FEA, the ROM setup given in figure Xb is used. Only two nodes, one of which is completely locked
-
+With these governing equations it is possible link an applied force to a relative change in the length of the element, assuming the problem is fully constrained (i.e. one node is pinned).
