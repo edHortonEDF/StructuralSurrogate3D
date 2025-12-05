@@ -3,23 +3,24 @@ Single Element Formulation
 Consider a single beam element with 2 nodes. This element has 8 degrees of freedom at each node which allow for a 6 dimensional stress tensor to be calculated for any given applied load or displacement. The 8 degrees of freedom are linked by considering each element as three 3D beams as shown in Figure 2 1.
 Figure 2 1: Figure showing one element and the beams it is made of. The dofs for one end of the beam are given.
 
-The three beams correspond to an axial beam with 4 degrees of freedom (u_xx,u_xy,u_xz,θ_xz), a transverse beam (u_yy,θ_yz), and an out-of-plane beam (u_zz,θ_zx). The forces applied to an element, f_e,can be related to the resulting deflections and rotations, u_e, via the element stiffness matrix, $k_e$, as follows:
+The three beams correspond to an axial beam with 4 degrees of freedom ($u_xx,u_xy,u_xz,\theta_xz$), a transverse beam ($u_yy,\theta_yz$), and an out-of-plane beam ($u_zz,\theta_zx$). The forces applied to an element, f_e,can be related to the resulting deflections and rotations, u_e, via the element stiffness matrix, $k_e$, as follows:
 
 
-$$f_e=k_e u_e$$	Equation 1
+$$f_e=k_e u_e$$	
 
 
 The element stiffness matrix is constructed using a set of three governing equations:
-	The degrees of freedom related to the element, u_e, can be related to the deformation (represented as strain), ϵ via Equation 2:
-$\epsilon=Bu_e$	Equation 2
+	The degrees of freedom related to the element, $u_e$, can be related to the deformation (represented as strain), $\epsilon$ via:
+	
+$\epsilon=Bu_e$
 
-Where B is a matrix that defines the relationship between u_e and ϵ. The construction of the B matrix is outlined in Appendix A.
+Where B is a matrix that defines the relationship between $u_e$ and $\epsilon$. 
 
-Figure 2 2: Figure describing what d_x^n is.
-	The strain is related to the internal forces (represented as stress) via Equation 3
-σ=Cϵ	Equation 3
 
-Where σ_ij is the stress and C_ijkl is the 6x6 material model. 
+	The strain is related to the internal forces (represented as stress) via:
+$\sigma=C\epsilon$
+
+Where $\sigma_ij$ is the stress and C_ijkl is the 6x6 material model. 
 
 	The stress is related to the applied forces via Equation 4:
 f_e=A^T σ	Equation 4
