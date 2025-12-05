@@ -11,7 +11,7 @@ $$f_e=k_e u_e$$	Equation 1
 
 The element stiffness matrix is constructed using a set of three governing equations:
 	The degrees of freedom related to the element, u_e, can be related to the deformation (represented as strain), ϵ via Equation 2:
-ϵ=Bu_e	Equation 2
+$\epsilon=Bu_e$	Equation 2
 
 Where B is a matrix that defines the relationship between u_e and ϵ. The construction of the B matrix is outlined in Appendix A.
 
