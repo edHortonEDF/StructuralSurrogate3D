@@ -70,7 +70,7 @@ $d\epsilon^{\theta}=\alpha.dT.\delta$
 Where  $\alpha$ is the thermal expansion coefficient, $dT$ is the temperature difference in the increment and $\delta$ is the Kronecker delta.
 The trial stress, σ^tr, can then be found via:
 
-$d\sigma^{tr}=Cd{\epsilon}^(t,m)$
+$d\sigma^{tr}=Cd{\epsilon}^{(t,m)}$
 
 as
 
