@@ -12,7 +12,7 @@ import math
 import stiffnessMatrix as sm
 import sys
 
-
+#Converts a variable to a float if possible. If not possible returns an error.
 def Convert2Float(value):
         try:
             value = float(value)
@@ -20,8 +20,9 @@ def Convert2Float(value):
             pass
     
         return value
-    
-# open the properties file
+
+
+# Open the Loading and Constraint files to create a dictionary of the applied loads.
 def openLoadingFile(properties,path,load_fname,constraint_fname,temp_fname):
     
     units = properties["Raw"]
@@ -70,7 +71,7 @@ def openLoadingFile(properties,path,load_fname,constraint_fname,temp_fname):
 
 
 
-# open the properties file
+# open the properties file to construct an dictionary of the material properties and state variables for each unit/element. 
 def openPropsFile(path,fname,nodal_dofs,model_type,constraint_type):
     units = pd.read_csv(path+fname)
     units = pd.DataFrame.to_numpy(units)
@@ -123,7 +124,7 @@ def openPropsFile(path,fname,nodal_dofs,model_type,constraint_type):
                 
                 
             else:
-                print("Plane stress no yet implemented")
+                print("Plane stress not yet implemented")
                 sys.exit()
         elif model_type == "1D":
             D_e[0,0] = E
@@ -184,7 +185,7 @@ def openPropsFile(path,fname,nodal_dofs,model_type,constraint_type):
     return properties
 
 
-
+#von Mises stress calculator
 def misescalc(s_vec):
     #s_vec - full 3D stress tensor
     s_hyd = (s_vec[0] + s_vec[1] + s_vec[2])/3
@@ -206,7 +207,7 @@ def misescalc(s_vec):
     return stress_eq,s_hyd
 
 
-
+#Neutral axis calculator
 def neutralAxisCalc(properties):
     #ony gives neutral axis in the x direction currently.
     props = properties["Raw"]
@@ -284,4 +285,5 @@ def neutralAxisCalc(properties):
     
     
     
+
     
