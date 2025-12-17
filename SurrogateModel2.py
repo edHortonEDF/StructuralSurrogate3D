@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 """
+This is the primary script that should be executed to run the surrogate model.
+
+All the inputs required are located in this file unless otherwise stated.
+
 Created on Fri Jun 20 08:14:55 2025
 
 @author: horto1e
@@ -27,20 +31,21 @@ path = 'C:\\Temp\\HLoop\\3D\\SimpleTests\\shear\\'
 #path = ''
 
 
-model_type = "3D" # This just removes some components from tthe elastic stiffness matrix. seems to work even with plasticity...
-#Only add constraints/applied alods in Fxx,Mxx. Other directions will cause model to not converge.
+model_type = "3D" # Options: "1D", "3D"
+#This removes some components from the elastic stiffness matrix. 
+#Only add constraints/applied alods in Fxx,Mxx. Loads in other directions will cause model to not converge.
 
 #constraint type - determines which D_e and B matrix to use.
 #PE - plane strain - also need to set uXzz to 0 in constraints file.
 #PS - plane stress (not implemented)
-#Axi - axisymmetric
+#Axi - axisymmetric - (not implemented)
 constraint_type = 'PE'
 
 #Testing
 Testing = 0
 results_fname = "expected_results.txt"
 
-#Jacobian Method - currently not implemented. CHange in NR_generic method
+#Jacobian Method - Currently not implemented. CHange in NR_generic method
 NumericalJ = 0
 pert = 1e-8
 
@@ -48,8 +53,8 @@ pert = 1e-8
 
 # ========= EDND OF INPUTS ============
 nodal_dofs = 8 # number of degrees of freedom at each node. This should only change is the model is fundamentally altered to have more
-#dofs per node.
-# uxx,uxy,uxz,rxz,uyy,uzz
+#dofs per node. Note that each element will have nodal_dofs*2 degrees of freedom.
+# uxx,uxy,uxz,rxz,uyy,uzz,r_yy,r_zz
 
 if Testing == 1:
     fea = pd.read_csv(path+results_fname,delimiter='\t')
@@ -77,7 +82,7 @@ total_dofs = len(stiff)
 u = np.zeros([n_t_steps,n_nodes*nodal_dofs])
 F = np.zeros([n_t_steps,n_nodes*nodal_dofs])
 
-#THis should be hardcoded as 6. (number of stress components)
+#This should be hardcoded as 6. (number of stress components.)
 stress_u = np.zeros([n_t_steps,6,n_units])
 strain_u = np.zeros([n_t_steps,6,n_units])
 strain_u_th = np.zeros([n_t_steps,6,n_units])
@@ -91,11 +96,11 @@ for t_step in range(0,n_t_steps):
     
     
     
-    #Calculate new dn based on shift of neutral axis
+    #Calculate new dn (distance of each unit's connections from the neutral axis of the node.) based on shift of neutral axis. neutral axis shifts due to changing D_e due to plasticity.
     
-    #Calculate a and b matrix for each unit. - dont here so that if tn shifts a and b must be recalculated (dn changes).
+    #Calculate a and b matrix for each unit. - do it here so that if tn shifts a and b must be recalculated (dn changes).
     if constraint_type != 'Axi':
-        properties = sm.aAndbMatrixCalc(properties,nodal_dofs)
+        properties = sm.aAndbMatrixCalc(properties,nodal_dofs) #No yet implemented correctly
     else:
         properties = sm.aAndbMatrixCalc_axi(properties,nodal_dofs)
     
@@ -117,7 +122,7 @@ for t_step in range(0,n_t_steps):
         u_prev = u[t_step-1,:]
         
     #update T and dT in state variables
-    #T is temperature at the previus increment (same as everything else in state var.)
+    #T is temperature at the previous increment (same as everything else in state var.)
     for unit in range(0,n_units):
         
         if t_step == 0:
@@ -131,7 +136,7 @@ for t_step in range(0,n_t_steps):
         
     #==== Load increment ====
     
-    #Applied loads:
+    #Applied load increment:
     dF_app = F_app - F_app_prev
     
     #Applied displacements
@@ -149,7 +154,7 @@ for t_step in range(0,n_t_steps):
     
     
     dF_rf_app = np.zeros([total_dofs])
-    # Target reaction force forces - might move somewhere else.
+    # Target reaction force forces
     for i in range(0,total_dofs):
         if du_app[i] == 'N':
             dF_rf_app[i] = dF_app[i]
@@ -157,7 +162,7 @@ for t_step in range(0,n_t_steps):
             dF_rf_app[i] = 0
     
     
-    #Initial Guess accounting for constraints (applied displacements) - u_0
+    #Initial Guess accounting for constraints (applied displacements and rotations) - u_0
     du_g = np.zeros([total_dofs])
     for i in range(0,total_dofs):
         if du_app[i] == 'N':
@@ -167,7 +172,7 @@ for t_step in range(0,n_t_steps):
     
     
     
-    #warning about applied force + constraint
+    #warning about applied force + constraint on same dof
     for dof in range(0,len(du_app)):
         if du_app[dof] != 'N' and dF_app[dof] != 0:
             print('WARNING: Both force and constraint applied to node '+str(dof)+'! Only constraint will be applied')
@@ -190,14 +195,10 @@ for t_step in range(0,n_t_steps):
         F[t_step,:] = F[t_step-1,:] + dF_rf_final*-1
         
     
-    #update nu in bmat if plane strain - needs to be done before state variable update I think
-    #model_type = 'PE'
-    #if model_type == 'PE':
-    #    #update b_mat with new non-linear poissons ratio
-    #    properties = sm.aAndbMatrixCalc(properties)
+
         
     #update state variables
-    #will need to be model specific.
+    #will need to be model specific. - currentl assumes a conventional material model that uses PEEQ and backstress to track plasticity.
     for unit in range(0,n_units):
         #total strain
         properties[str(unit)]["StateVariables"]["eto"] +=  properties[str(unit)]["StateVariables"]["deto"]
@@ -226,7 +227,7 @@ for t_step in range(0,n_t_steps):
         strain_u_el[t_step,:,unit] = properties[str(unit)]["StateVariables"]["eel"]
     
     
-    
+# END OF SIMULATION LOOP 
 
 #Post processing:
     
@@ -385,6 +386,7 @@ if strains_therm_on == 1:
         plt.legend(leg_list[f])
         plt.ylabel('Strain')
         plt.xlabel('distance from loading position') 
+
 
 
    
