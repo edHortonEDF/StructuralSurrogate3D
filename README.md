@@ -73,7 +73,7 @@ The trial stress, σ^tr, can then be found via:
 $d\sigma^{tr}=Cd{\epsilon}^{(t,m)}$
 
 
-$\sigma^{tr}_t = \sigma^{tr}_{t-1}$
+$\sigma^{tr}_{t} = \sigma^{tr}_{t-1}$
 
 =\sigma^tr_{t-1} + d\sigma^{tr}
 
