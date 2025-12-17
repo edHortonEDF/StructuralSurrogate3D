@@ -17,8 +17,8 @@ $\epsilon=Bu_e$
 Where B is a matrix that defines the relationship between $u_e$ and $\epsilon$. 
 
 
-	The strain is related to the internal forces (represented as stress) via:
-$\sigma=C\epsilon$
+The strain is related to the internal forces (represented as stress) via:
+	$\sigma=C\epsilon$
 
 Where $\sigma_{ij}$ is the stress and C_ijkl is the 6x6 material model. 
 
