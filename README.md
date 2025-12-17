@@ -73,9 +73,7 @@ The trial stress, σ^tr, can then be found via:
 $d\sigma^{tr}=Cd{\epsilon}^{(t,m)}$
 
 
-$\sigma^{tr}_{t} = \sigma^{tr}_t$
-
-=\sigma^tr_{t-1} + d\sigma^{tr}
+$\sigma^{tr}_{t} =\sigma^tr_{t-1} + d\sigma^{tr}$
 
 This trial stress is checked against the yield function, $f^y$, if it is less than or equal to zero then the behaviour is elastic, otherwise there is plasticity. In the case of linear elasticity $\sigma^tr_t=\sigma_t$ at all times.
 The reaction force increment relative to the degrees of freedom in the element can then be found via.
