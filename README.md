@@ -1,8 +1,7 @@
 
 **Single Element Formulation**
 
-Consider a single beam element with 2 nodes. This element has 8 degrees of freedom at each node which allow for a 6 dimensional stress tensor to be calculated for any given applied load or displacement. The 8 degrees of freedom are linked by considering each element as three 3D beams as shown in Figure 2 1.
-Figure 2 1: Figure showing one element and the beams it is made of. The dofs for one end of the beam are given.
+Consider a single beam element with 2 nodes. This element has 8 degrees of freedom at each node which allow for a 6 dimensional stress tensor to be calculated for any given applied load or displacement. 
 
 The three beams correspond to an axial beam with 4 degrees of freedom ($u_{xx},u_{xy},u_{xz},\theta_{xz}$), a transverse beam ($u_{yy},\theta_{yz}$), and an out-of-plane beam ($u_{zz},\theta_{zx}$). The forces applied to an element, f_{e},can be related to the resulting deflections and rotations, u_e, via the element stiffness matrix, $k_e$, as follows:
 
@@ -12,7 +11,7 @@ $f_e=k_e u_e$
 The element stiffness matrix is constructed using a set of three governing equations:
 	The degrees of freedom related to the element, $u_e$, can be related to the deformation (represented as strain), $\epsilon$ via:
 	
-**$\epsilon=Bu_e$**
+$\epsilon=Bu_e$
 
 Where B is a matrix that defines the relationship between $u_e$ and $\epsilon$. 
 
@@ -31,40 +30,49 @@ Where $A^T$ is a matrix that defines the relationship between $f_e$ and $\sigma$
 With these governing equations it is possible link an applied force to a relative change in the length of the element, assuming the problem is fully constrained (i.e. one node is pinned).
 
 
-General Solver Functionality
+**General Solver Functionality**
 
 Firstly, the system must be fully constrained. The simplest manner for achieve this is by forcing all the degrees of freedom at once node to be 0, i.e. pinned in place. If the system is not fully constrained the problem is unsolvable and the surrogate model will fail. 
 An initial guess for the degrees of freedom, u, is chosen (usually 0 in all positions). At this point each element is run through the material model with the associated degrees of freedom to find the strain and stress.
 The stress is converted into the resulting forces in the unit via:
+
 $df_e  =Ad\sigma_e$
 
 
-This gives the forces associated with the unit positions in the correct location in the context of all the degrees of freedom in the global stiffness matrix (df_e^global).
-Through this method the total combination of resultant forces due to the degrees of freedom of all units can then be found by simply adding  df_e^global  from every unit together.
+This gives the forces associated with the unit positions in the correct location in the context of all the degrees of freedom in the global stiffness matrix ($df_e^{global}$).
+Through this method the total combination of resultant forces due to the degrees of freedom of all units can then be found by simply adding  $df_e^{global}$  from every unit together.
 
-$F = \sum_{i=1}^{N}df_{e,i}^global$
+$F = \sum_{i=1}^{N}df_{e,i}^{global}$
 
-This is then compared to the applied forces vector, ignoring any rows which contain Dirichlet boundary conditions. If the residual is greater than a set tolerance, then the initial guess for u has not reached equilibrium and a new guess for u is found using Eq. A. 
-u=K^(-1).F	Equation 14
+This is then compared to the applied forces vector, ignoring any rows which contain Dirichlet boundary conditions. If the residual is greater than a set tolerance, then the initial guess for $u$ has not reached equilibrium and a new guess for u is found using:
+
+$u=K^{-1}.F$
 
 The above process is repeated iteratively using a Newton-Raphson convergence algorithm until a u that satisfies equilibrium is found.
-Material Model Functionality
+
+
+**Material Model Functionality**
+
 A key part of the FEA solver is the calculation of stress given a set of degrees of freedom. This occurs in the material model as follows:
 
-The total strain increment, dϵ^t, is calculated via Eq. X
-dϵ^t  =B〖du〗_e	Equation 15
+The total strain increment, $d\epsilon^t$, is calculated via:
 
-The surrogate considers thermal loads so the total mechanical strain, dϵ^(t,m),  must be separated from the thermal strain, dϵ^θ, via Equation 16:
-dϵ^(t,m)=dϵ^t-dϵ^θ	Equation 16
+$d\epsilon^t  =Bdu_e$
 
-Where  dϵ^θ is calculated as follows:
-dϵ^θ=α.dT.δ	Equation 17
+The surrogate considers thermal loads so the total mechanical strain, $d\epsilon^{t,m}$,  must be separated from the thermal strain, $d\epsilon^{\theta}$, via:
 
-Where  α is the thermal expansion coefficient, dT is the temperature difference in the increment and δ is the Kronecker delta.
-The trial stress, σ^tr, can then be found via Eq. X and Y:
-dσ^tr=Cdϵ^(t,m)	Equation 18
+$d\epsilon^{t,m}=d\epsilon^{t}-d\epsilon^{\theta}$
 
-├ σ^tr ┤|_t=├ σ^tr ┤|_(t-1)+ dσ^tr	Equation 19
+Where  d\epsilon^{\theta} is calculated as follows:
+
+$d\epsilon^{\theta}=\alpha.dT.\delta$
+
+Where  $\alpha$ is the thermal expansion coefficient, $dT$ is the temperature difference in the increment and $\delta$ is the Kronecker delta.
+The trial stress, σ^tr, can then be found via:
+
+$d\sigma^{tr}=Cd\{epsilon}^(t,m)$
+
+$\sigma^{tr}_t=\sigma^tr ┤|_(t-1)+ dσ^tr$
 
 This trial stress is checked against the yield function, f^y, if it is less than or equal to zero then the behaviour is elastic, otherwise there is plasticity. In the case of linear elasticity ├ σ^tr ┤|_t= ├ σ┤|_t at all times.
 The reaction force increment relative to the degrees of freedom in the element can then be found via Eq X.
