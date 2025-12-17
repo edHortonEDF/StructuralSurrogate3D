@@ -3,7 +3,7 @@ Single Element Formulation
 Consider a single beam element with 2 nodes. This element has 8 degrees of freedom at each node which allow for a 6 dimensional stress tensor to be calculated for any given applied load or displacement. The 8 degrees of freedom are linked by considering each element as three 3D beams as shown in Figure 2 1.
 Figure 2 1: Figure showing one element and the beams it is made of. The dofs for one end of the beam are given.
 
-The three beams correspond to an axial beam with 4 degrees of freedom ($u_xx,u_xy,u_xz,\theta_xz$), a transverse beam ($u_yy,\theta_yz$), and an out-of-plane beam ($u_zz,\theta_zx$). The forces applied to an element, f_e,can be related to the resulting deflections and rotations, u_e, via the element stiffness matrix, $k_e$, as follows:
+The three beams correspond to an axial beam with 4 degrees of freedom ($u_{xx},u_{xy},u_{xz},\theta_{xz}$), a transverse beam ($u_{yy},\theta_{yz}$), and an out-of-plane beam ($u_{zz},\theta_{zx}$). The forces applied to an element, f_{e},can be related to the resulting deflections and rotations, u_e, via the element stiffness matrix, $k_e$, as follows:
 
 
 $f_e=k_e u_e$
@@ -20,7 +20,7 @@ The strain is related to the internal forces (represented as stress) via:
 
 $\sigma=C\epsilon$
 
-Where $\sigma_{ij}$ is the stress and C_ijkl is the 6x6 material model. 
+Where $\sigma_{ij}$ is the stress and $C_{ijkl}$ is the 6x6 material model. 
 
 The stress is related to the applied forces via Equation 4:
 
