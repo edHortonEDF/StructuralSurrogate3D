@@ -16,16 +16,17 @@ $\epsilon=Bu_e$
 
 Where B is a matrix that defines the relationship between $u_e$ and $\epsilon$. 
 
-
 The strain is related to the internal forces (represented as stress) via:
-	$\sigma=C\epsilon$
+
+$\sigma=C\epsilon$
 
 Where $\sigma_{ij}$ is the stress and C_ijkl is the 6x6 material model. 
 
-	The stress is related to the applied forces via Equation 4:
+The stress is related to the applied forces via Equation 4:
+
 $f_e=A^T \sigma$	
 
-	Where $A^T$ is a matrix that defines the relationship between $f_e$ and $\sigma$. In this case $A^T=B^T$.
+Where $A^T$ is a matrix that defines the relationship between $f_e$ and $\sigma$. In this case $A^T=B^T$.
 
 With these governing equations it is possible link an applied force to a relative change in the length of the element, assuming the problem is fully constrained (i.e. one node is pinned).
 
