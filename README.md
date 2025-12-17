@@ -72,17 +72,19 @@ The trial stress, σ^tr, can then be found via:
 
 $d\sigma^{tr}=Cd{\epsilon}^(t,m)$
 
-$\sigma^{tr}_t=\sigma^tr_{t-1}+ d\sigma^{tr}$
+as
 
-This trial stress is checked against the yield function, f^y, if it is less than or equal to zero then the behaviour is elastic, otherwise there is plasticity. In the case of linear elasticity ├ σ^tr ┤|_t= ├ σ┤|_t at all times.
-The reaction force increment relative to the degrees of freedom in the element can then be found via Eq X.
+$\sigma^{tr}_t=\sigma^tr_{t-1} + d\sigma^{tr}$
 
-f_e=A^T.dσ^tr	Equation 20
+This trial stress is checked against the yield function, $f^y$, if it is less than or equal to zero then the behaviour is elastic, otherwise there is plasticity. In the case of linear elasticity $\sigma^tr_t=\sigma_t$ at all times.
+The reaction force increment relative to the degrees of freedom in the element can then be found via.
+
+$f_e=A^T.d\sigma^tr$
 
 Finally, the element reaction force is added to the global reaction force matrix for comparison to the applied forces.
 
 
-Chaboche Material Model
+**Chaboche Material Model**
 
 A Lemaitre-Chaboche material model has been created. It follows the same formulation as the ABAQUS implementation, allowing for simple validation between the methods. The general form is given below.
 To replicate the complex behaviour seen in 316H such as cyclic hardening and ratchetting, a Lemaitre-Chaboche combined hardening material model was chosen. The built-in ABAQUS implementation of the selected model was used so details can be found in the documentation [1]. A brief outline of the approach is given below.
