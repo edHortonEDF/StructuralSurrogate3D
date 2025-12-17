@@ -7,11 +7,7 @@ Figure 2 1: Figure showing one element and the beams it is made of. The dofs for
 The three beams correspond to an axial beam with 4 degrees of freedom ($u_{xx},u_{xy},u_{xz},\theta_{xz}$), a transverse beam ($u_{yy},\theta_{yz}$), and an out-of-plane beam ($u_{zz},\theta_{zx}$). The forces applied to an element, f_{e},can be related to the resulting deflections and rotations, u_e, via the element stiffness matrix, $k_e$, as follows:
 
 $f_e=k_e u_e$
-$\mathbf{f}_e = \mathbf{k}_e \mathbf{u}_e$
 
-$$
-\mathbf{f}_e = \mathbf{k}_e \mathbf{u}_e
-$$
 
 The element stiffness matrix is constructed using a set of three governing equations:
 	The degrees of freedom related to the element, $u_e$, can be related to the deformation (represented as strain), $\epsilon$ via:
@@ -37,16 +33,16 @@ With these governing equations it is possible link an applied force to a relativ
 
 General Solver Functionality
 
-Sections 2.1-2.4 demonstrated how a series of elements can be joined together in arbitrary configurations but solving the resulting equations, given a set of boundary conditions is required to extract any useful information. 
 Firstly, the system must be fully constrained. The simplest manner for achieve this is by forcing all the degrees of freedom at once node to be 0, i.e. pinned in place. If the system is not fully constrained the problem is unsolvable and the surrogate model will fail. 
 An initial guess for the degrees of freedom, u, is chosen (usually 0 in all positions). At this point each element is run through the material model with the associated degrees of freedom to find the strain and stress.
 The stress is converted into the resulting forces in the unit via:
-df_e  =A〖dσ〗_e	Equation 12
+$df_e  =Ad\sigma_e$
 
 
 This gives the forces associated with the unit positions in the correct location in the context of all the degrees of freedom in the global stiffness matrix (df_e^global).
 Through this method the total combination of resultant forces due to the degrees of freedom of all units can then be found by simply adding  df_e^global  from every unit together.
-F= ∑_(i=1)^N▒〖df_(e,i)^global 〗	Equation 13
+
+$F = \sum_{i=1}^{N}df_{e,i}^global$
 
 This is then compared to the applied forces vector, ignoring any rows which contain Dirichlet boundary conditions. If the residual is greater than a set tolerance, then the initial guess for u has not reached equilibrium and a new guess for u is found using Eq. A. 
 u=K^(-1).F	Equation 14
