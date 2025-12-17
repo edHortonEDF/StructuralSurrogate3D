@@ -9,6 +9,10 @@ The three beams correspond to an axial beam with 4 degrees of freedom ($u_{xx},u
 $f_e=k_e u_e$
 $\mathbf{f}_e = \mathbf{k}_e \mathbf{u}_e$
 
+$$
+\mathbf{f}_e = \mathbf{k}_e \mathbf{u}_e
+$$
+
 The element stiffness matrix is constructed using a set of three governing equations:
 	The degrees of freedom related to the element, $u_e$, can be related to the deformation (represented as strain), $\epsilon$ via:
 	
