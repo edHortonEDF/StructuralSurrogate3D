@@ -6,7 +6,7 @@ Figure 2 1: Figure showing one element and the beams it is made of. The dofs for
 The three beams correspond to an axial beam with 4 degrees of freedom ($u_xx,u_xy,u_xz,\theta_xz$), a transverse beam ($u_yy,\theta_yz$), and an out-of-plane beam ($u_zz,\theta_zx$). The forces applied to an element, f_e,can be related to the resulting deflections and rotations, u_e, via the element stiffness matrix, $k_e$, as follows:
 
 
-$$f_e=k_e u_e$$	
+$f_e=k_e u_e$
 
 
 The element stiffness matrix is constructed using a set of three governing equations:
