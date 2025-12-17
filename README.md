@@ -1,4 +1,6 @@
 
+For the full report of this script please see: G:\R&D\AR&SI\Task Files\2025\23_High_Temperature_Surrogate_Model
+
 **Single Element Formulation**
 
 Consider a single beam element with 2 nodes. This element has 8 degrees of freedom at each node which allow for a 6 dimensional stress tensor to be calculated for any given applied load or displacement. 
