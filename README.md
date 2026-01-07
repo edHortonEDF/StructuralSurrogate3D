@@ -106,7 +106,7 @@ $dX_{ij}= \sum_{(k=1)}^{3}(dX_{ij}^{k})$
 Equation 23
 
 
-dX_ij^k=C_k dϵ ̅^pl-γ_k X_ij^k |dϵ ̅^pl |	Equation 24
+$dX_{ij}^{k}=C_k d\epsilon_{ij}^{pl} - \gamma_k X_{ij}^k d\epsilon_{ij}^{pl}$	Equation 24
 
 C_k and γ_k are material parameters, and dϵ ̅^pl is the increment of equivalent plastic strain. The isotropic hardening component, σ^0 is found via Equation 25:
 σ^0=σ_ys^0+Q(1-exp⁡(-bϵ ̅^pl ) )	Equation 25
