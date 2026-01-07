@@ -114,7 +114,7 @@ $\sigma^0=\sigma_{ys}^0+Q(1-exp⁡(-b\epsilon^{pl}) )$	Equation 25
 
 where σ_ys^0 is the yield stress, and Q and b are material parameters. A goal seek method, such as Newton-Raphson, is employed to find the value of dϵ ̅^pl that ensures Equation 21 is equal to zero.
 
-The combined hardening material model used the linear elastic parameters given in Error! Reference source not found. combined with the combined hardening parameters given in Table 2.1. The isotropic parameters (Q and b) were taken from fits to a cyclic strain-controlled test (Δϵ=0.9%,Rϵ=-2) on 316H ELG at 550℃ termed ALM53.
+The combined hardening material model parameters are given in Table 2.1. The isotropic parameters (Q and b) were taken from fits to a cyclic strain-controlled test (Δϵ=0.9%,Rϵ=-2) on 316H ELG at 550℃ termed ALM53.
 It must be noted that the strain is assumed to be in percent not absolute. This work is not focused on fitting methods so, for the purposes of this report the chosen parameters represent a reasonable approximation of the behaviour of 316H at 550℃.
 
 Table 2 1: Lemaitre-Chaboche combined hardening model parameters. 
