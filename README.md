@@ -109,7 +109,8 @@ Equation 23
 $dX_{ij}^{k}=C_k d\epsilon_{ij}^{pl} - \gamma_k X_{ij}^k d\epsilon_{ij}^{pl}$	Equation 24
 
 C_k and γ_k are material parameters, and dϵ ̅^pl is the increment of equivalent plastic strain. The isotropic hardening component, σ^0 is found via Equation 25:
-σ^0=σ_ys^0+Q(1-exp⁡(-bϵ ̅^pl ) )	Equation 25
+
+$\sigma^0=\sigma_{ys}^0+Q(1-exp⁡(-b\epsilon^{pl}) )$	Equation 25
 
 where σ_ys^0 is the yield stress, and Q and b are material parameters. A goal seek method, such as Newton-Raphson, is employed to find the value of dϵ ̅^pl that ensures Equation 21 is equal to zero.
 
