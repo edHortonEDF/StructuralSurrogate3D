@@ -91,15 +91,19 @@ A Lemaitre-Chaboche material model has been created. It follows the same formula
 To replicate the complex behaviour seen in 316H such as cyclic hardening and ratchetting, a Lemaitre-Chaboche combined hardening material model was chosen. The built-in ABAQUS implementation of the selected model was used so details can be found in the documentation [1]. A brief outline of the approach is given below.
 Initially it is assumed that each loading increment results in elastic behaviour only, i.e. σ_ij^tr=C_ijkl ϵ_ij. To test if this assumption is valid, the trial stress (σ_ij^tr) is used to check if the yield surface condition is met, Equation 21:
 
-$\sqrt{3/2. (S_ij-X_ij ):(S_ij-X_ij )} - \sigma^0 <= 0$
-√(3/2 (S_ij-X_ij ):(S_ij-X_ij )  )-σ^0≤0	Equation 21
+$\sqrt{3/2(S_ij-X_ij ):(S_ij-X_ij )} - \sigma^0 <= 0$
+Equation 21
 
-Where  S_ij is the deviatoric stress tensor, X_ij is the backstress tensor that defines the kinematic hardening behaviour and σ^0 is the isotropic hardening component.
+Where  $S_ij$ is the deviatoric stress tensor,$ X_ij$ is the backstress tensor that defines the kinematic hardening behaviour and $\sigma^0$ is the isotropic hardening component.
 The deviatoric stress tensor is calculated via Equation 22:
-S_ij=σ_ij-1/3 tr(σ_ii )	Equation 22
 
-The evolution of X_ij is defined through three backstress terms by Equation 23 and Equation 24.
-dX_ij= ∑_(k=1)^3▒〖dX_ij^k 〗	Equation 23
+$S_ij=\sigma_ij-1/3 tr(\sigma_ii )$	
+Equation 22
+
+The evolution of $X_ij$ is defined through three backstress terms by Equation 23 and Equation 24.
+
+$dX_ij= \sum_(k=1)^3(dX_ij^k)$
+Equation 23
 
 
 dX_ij^k=C_k dϵ ̅^pl-γ_k X_ij^k |dϵ ̅^pl |	Equation 24
