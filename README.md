@@ -119,11 +119,18 @@ It must be noted that the strain is assumed to be in percent not absolute. This 
 
 Table 2 1: Lemaitre-Chaboche combined hardening model parameters. 
 Property	Value	Unit
+
 E	200000	MPa
+
 ν	0.3	
+
 σ_ys	50	MPa
+
 C	70000	MPa
+
 D	500	
+
 Q	400	MPa
+
 b	5	
 
